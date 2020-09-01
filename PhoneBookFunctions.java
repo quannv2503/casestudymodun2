@@ -6,13 +6,27 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PhoneBookFunctions extends Phone {
     static ArrayList<PhoneBookProperties> phoneList = new ArrayList();
 
     @Override
     void insertPhone(String name, String phone) {
-        phoneList.add(new PhoneBookProperties(name, phone));
+        boolean isInsert = false;
+        for (PhoneBookProperties a : phoneList) {
+            if (a.getPhone().equals(phone)) {
+                System.out.println("Phone number already in the contact list!");
+                isInsert = true;
+                break;
+            }
+        }
+        if (!isInsert) {
+            phoneList.add(new PhoneBookProperties(name, phone));
+            System.out.println("Added");
+        }
     }
 
     @Override
@@ -54,16 +68,38 @@ public class PhoneBookFunctions extends Phone {
 
     @Override
     void searchPhone(String name) {
-        boolean isSearch = false;
-        for (PhoneBookProperties a : phoneList) {
-            if (a.getName().equals(name)) {
-                System.out.println("Phone number:" + a.getPhone());
-                isSearch = true;
-                break;
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<String> listName = new ArrayList<>();
+        Pattern pattern = Pattern.compile(name);
+        Matcher matcher;
+        for (int i = 0; i < phoneList.size(); i++) {
+            matcher = pattern.matcher(phoneList.get(i).getName());
+            if (matcher.find()) {
+                listName.add(phoneList.get(i).getName());
             }
         }
-        if (!isSearch) {
-            System.out.println("This person is not in the contact list.");
+        if (listName.isEmpty()) {
+            System.out.println("Not found!");
+        } else if (listName.size() == 1) {
+            for (int i = 0; i < phoneList.size(); i++) {
+                if (phoneList.get(i).getName().equals(listName.get(0))) {
+                    System.out.println("Phone number of the person you want to find:" + phoneList.get(i).getPhone());
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Search found:");
+            for (int i = 0; i < listName.size(); i++) {
+                System.out.println((i + 1) + ":" + listName.get(i));
+            }
+            System.out.print("You are looking for friends in the directory:");
+            int find = Integer.parseInt(scanner.nextLine());
+            for (int i = 0; i < phoneList.size(); i++) {
+                if (phoneList.get(i).getName().equals(listName.get(find - 1))) {
+                    System.out.println("Phone number of the person you want to find:" + phoneList.get(i).getPhone());
+                    break;
+                }
+            }
         }
     }
 
@@ -74,14 +110,14 @@ public class PhoneBookFunctions extends Phone {
     }
 
     @Override
-    String shows() {
+    void shows() {
         System.out.println("<-----------------------------Phone Book---------------------------->");
+        System.out.printf("\t%10s %15s %30s \n\n", "STT", "Full name", "Phone number");
         String b = " ";
         for (int i = 0; i < phoneList.size(); i++) {
-            b += "\t " + (i + 1) + "  | " + phoneList.get(i).getName() + " : " +
-                    phoneList.get(i).getPhone() + "\n";
+            System.out.printf("\t %8d %6s %-27s %1s \n", (i + 1), " ", phoneList.get(i).getName(), phoneList.get(i).getPhone());
         }
-        return b;
+
     }
 
     @Override
@@ -99,6 +135,4 @@ public class PhoneBookFunctions extends Phone {
         }
         System.out.println("Saved.");
     }
-
-
 }

@@ -14,6 +14,7 @@ public class Menu {
     public void menu() {
         do {
             try {
+                System.out.println();
                 System.out.println("                                                Please select menu:");
                 System.out.println("<------------------------------------------------------------------------------------------------------------------------->");
                 System.out.println("| 1:Insert Phone        |        2:Remove Phone           |          3:Update Phone         |          4:Search Phone    |");
@@ -23,7 +24,7 @@ public class Menu {
                 System.out.print("You choose:");
                 switch (Integer.parseInt(scanner.nextLine())) {
                     case 1:
-                        boolean validName=false;
+                        boolean validName = false;
                         do {
                             System.out.print("Enter name:");
                             enterName = scanner.nextLine();
@@ -37,7 +38,7 @@ public class Menu {
                                 System.out.println("Invalid name!");
                             }
                         } while (!validName);
-                        boolean validNumber=false;
+                        boolean validNumber = false;
                         do {
                             System.out.print("\nEnter phone number:");
                             enterPhoneNumber = scanner.nextLine();
@@ -46,7 +47,7 @@ public class Menu {
                             Pattern pattern = Pattern.compile(regexPhoneNumber);
                             Matcher matcher = pattern.matcher(enterPhoneNumber);
                             if (matcher.find()) {
-                                validNumber=true;
+                                validNumber = true;
                                 break;
                             } else {
                                 System.out.println("Invalid phone number!");
@@ -62,7 +63,7 @@ public class Menu {
                     case 3:
                         System.out.print("Whose phone number do you want to fix:");
                         String name1 = scanner.nextLine();
-                        boolean validNumberNew=false;
+                        boolean validNumberNew = false;
                         do {
                             System.out.print("\nNew phone number:");
                             nowPhoneNumber = scanner.nextLine();
@@ -71,7 +72,7 @@ public class Menu {
                             Pattern pattern = Pattern.compile(regexPhoneNumberNew);
                             Matcher matcher = pattern.matcher(nowPhoneNumber);
                             if (matcher.find()) {
-                                validNumberNew=true;
+                                validNumberNew = true;
                                 break;
                             } else {
                                 System.out.println("Invalid phone number!");
@@ -82,13 +83,14 @@ public class Menu {
                     case 4:
                         System.out.print("Enter the name of the person you want to find:");
                         String name2 = scanner.nextLine();
-                        phoneBookFunctions.searchPhone(name2);
+                        String name3 = ".*" + name2 + ".*";
+                        phoneBookFunctions.searchPhone(name3);
                         break;
                     case 5:
                         phoneBookFunctions.sort();
                         break;
                     case 6:
-                        System.out.println(phoneBookFunctions.shows());
+                        phoneBookFunctions.shows();
                         break;
                     case 7:
                         phoneBookFunctions.save();

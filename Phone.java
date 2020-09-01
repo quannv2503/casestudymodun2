@@ -11,7 +11,7 @@ public abstract class Phone {
 
     abstract void sort();
 
-    abstract String shows();
+    abstract void shows();
 
     abstract void save();
 }
